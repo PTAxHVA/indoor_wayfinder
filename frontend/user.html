@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Wayfinder — User</title>
+    <link rel="stylesheet" href="app.css" />
+</head>
+
+<body>
+    <div class="header">
+        <strong>Wayfinder • User</strong>
+        <label class="small">Bản đồ:</label>
+        <select id="mapSelect"></select>
+        <input id="query" type="text" placeholder="Ví dụ: từ tòa A đến phòng B202" style="min-width: 320px;">
+        <button id="setPosBtn">Đặt vị trí của tôi</button>
+        <button id="goBtn">Tìm đường</button>
+
+        <label class="small" style="margin-left:8px;">Tỉ lệ (px/m):</label>
+        <input id="scaleInput" type="number" min="1" step="1" value="100" style="width:88px;">
+        <span class="badge" id="hintBadge">Nhập câu & bấm Tìm đường</span>
+    </div>
+
+    <div class="container">
+        <div class="board" id="board">
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImage" alt="map" />
+                <svg id="overlay"></svg>
+            </div>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="section">
+                <h3>Chỉ dẫn</h3>
+                <div id="insList" class="list"></div>
+            </div>
+
+            <div class="section">
+                <h3>Gợi ý (khi lỗi)</h3>
+                <div id="suggestList" class="list"></div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="user.js"></script>
+</body>
+
+</html>

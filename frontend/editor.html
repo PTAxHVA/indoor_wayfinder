@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Wayfinder — Editor</title>
+    <link rel="stylesheet" href="app.css" />
+</head>
+
+<body>
+    <div class="header">
+        <strong>Wayfinder • Editor</strong>
+
+        <!-- Lọc theo tầng -->
+        <label class="small">Tầng:</label>
+        <select id="floorSelect" class="w120">
+            <!-- sẽ được fill động: Tất cả / 1 / 2 / 3 ... -->
+        </select>
+        <button id="addFloorBtn" class="btn-mini">+ Tầng</button>
+
+
+        <label class="small">Bản đồ:</label>
+        <select id="mapSelect" class="w200"></select>
+
+        <button id="reloadBtn">Tải lại</button>
+        <span class="badge" id="modeBadge">MODE: Idle</span>
+        <button id="modeAddNodeBtn">+ Thêm điểm</button>
+        <button id="modeDrawEdgeBtn">⟂ Vẽ đường</button>
+        <button id="finishEdgeBtn" class="btn-mini" disabled>Kết thúc đường (Enter)</button>
+        <button id="cancelModeBtn">Hủy (Esc)</button>
+        <button id="clearAllBtn" class="btn-danger">🗑 Xóa hết (map)</button>
+    </div>
+
+    <div class="container">
+        <div class="board" id="board">
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImage" alt="map" />
+                <svg id="overlay"></svg>
+            </div>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <!-- sidebar giữ nguyên -->
+        <aside class="sidebar">
+            <div class="section">
+                <h3>Hướng dẫn nhanh</h3>
+                <div class="list">
+                    <div class="item">Thêm điểm: chọn <b>+ Thêm điểm</b> → click lên bản đồ → nhập alias.</div>
+                    <div class="item">Vẽ đường: chọn <b>⟂ Vẽ đường</b> → click <b>vào node</b> để chọn điểm đầu → click
+                        các điểm trung gian → <b>double-click vào node đích</b> để kết thúc.</div>
+                    <div class="item">Tất cả cạnh <b>2 chiều</b> theo cấu hình backend.</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Nodes</h3>
+                <div id="nodeList" class="list"></div>
+            </div>
+
+            <div class="section">
+                <h3>Edges</h3>
+                <div id="edgeList" class="list"></div>
+            </div>
+        </aside>
+        <div class="section" style="width:100%">
+            <h3>Upload bản đồ mới</h3>
+            <div class="row">
+                <input id="upName" type="text" placeholder="Tên bản đồ (vd: Khu A - Tầng 1)" class="w200" />
+                <input id="upFloor" type="number" placeholder="Tầng (vd: 1)" class="w120" />
+                <input id="upPPM" type="number" placeholder="Pixels per meter (vd: 100)" class="w120" />
+                <input id="upFile" type="file" accept="image/*" />
+                <button id="upBtn">Tải ảnh lên</button>
+                <span id="upHint" class="small"></span>
+            </div>
+            <div class="hr"></div>
+        </div>
+    </div>
+
+    <script src="editor.js"></script>
+</body>
+
+</html>

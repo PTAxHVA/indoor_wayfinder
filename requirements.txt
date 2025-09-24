@@ -1,0 +1,9 @@
+fastapi 
+uvicorn[standard] 
+sqlmodel 
+sqlalchemy 
+networkx 
+rapidfuzz 
+Unidecode 
+python-multipart 
+pillow
