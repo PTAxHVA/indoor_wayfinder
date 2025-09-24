@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from sqlmodel import Session, select
 from backend.core.db import engine
-from backend.models.entities import Node, Map
+from backend.models.entities import Node, Map, Alias, Edge
 
 router = APIRouter()
 
@@ -91,6 +91,20 @@ def delete_node(node_id: int, session: Session = Depends(get_session)):
     n = session.get(Node, node_id)
     if not n:
         raise HTTPException(status_code=404, detail="Node không tồn tại.")
+
+    # Xoá alias liên quan
+    for a in session.exec(select(Alias).where(Alias.node_id == node_id)).all():
+        session.delete(a)
+
+    # Xoá edge có start/end là node này
+    for e in session.exec(
+        select(Edge).where(
+            (Edge.start_node_id == node_id) | (Edge.end_node_id == node_id)
+        )
+    ).all():
+        session.delete(e)
+
+    # Cuối cùng xoá node
     session.delete(n)
     session.commit()
     return {"ok": True}

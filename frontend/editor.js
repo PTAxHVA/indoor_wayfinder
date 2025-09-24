@@ -315,7 +315,9 @@ function renderLists() {
 			return `<div class="item" data-node="${n.id}">
       <div><b>#${n.id}</b> (${Math.round(n.x)}, ${Math.round(n.y)})${
 				n.is_landmark ? " • landmark" : ""
-			}</div>
+			} <button class="btn-mini" title="Xóa điểm" data-action="del-node" data-node-id="${
+				n.id
+			}">Xóa</button></div>
       <div class="sub">Alias:</div>
       <div class="alias-list">${
 			aliases || '<span class="small">— chưa có —</span>'
@@ -335,7 +337,11 @@ function renderLists() {
 	edgeList.innerHTML = edges
 		.map((e) => {
 			return `<div class="item">
-      <div><b>#${e.id}</b> ${e.start_node_id} → ${e.end_node_id}</div>
+      <div><b>#${e.id}</b> ${e.start_node_id} → ${
+				e.end_node_id
+			} <button class="btn-mini" title="Xóa cạnh" data-action="del-edge" data-edge-id="${
+				e.id
+			}">Xóa</button></div>
       <div class="sub">đoạn: ${e.polyline.length} • weight: ${formatPx(
 				e.weight
 			)}</div>
@@ -619,6 +625,16 @@ nodeList.addEventListener("click", async (e) => {
 		} catch (err) {
 			alert(err.message);
 		}
+	} else if (action === "del-node") {
+		const nodeId = parseInt(btn.getAttribute("data-node-id"), 10);
+		if (!Number.isFinite(nodeId)) return;
+		if (!confirm(`Xóa node #${nodeId}?`)) return;
+		try {
+			await fetchJSON(`/nodes/${nodeId}`, { method: "DELETE" });
+			await loadNodesEdgesForFloor(currentFloor);
+		} catch (err) {
+			alert(err.message);
+		}
 	} else if (action === "del-alias") {
 		const aliasId = parseInt(btn.getAttribute("data-alias-id"), 10);
 		const nodeId = parseInt(btn.getAttribute("data-node-id"), 10);
@@ -628,6 +644,24 @@ nodeList.addEventListener("click", async (e) => {
 			const arr = await fetchJSON(`/aliases?node_id=${nodeId}`);
 			aliasesByNode[nodeId] = arr;
 			renderLists();
+		} catch (err) {
+			alert(err.message);
+		}
+	}
+});
+
+// Delete edge via event delegation
+edgeList.addEventListener("click", async (e) => {
+	const btn = e.target.closest("[data-action]");
+	if (!btn) return;
+	const action = btn.getAttribute("data-action");
+	if (action === "del-edge") {
+		const edgeId = parseInt(btn.getAttribute("data-edge-id"), 10);
+		if (!Number.isFinite(edgeId)) return;
+		if (!confirm(`Xóa cạnh #${edgeId}?`)) return;
+		try {
+			await fetchJSON(`/edges/${edgeId}`, { method: "DELETE" });
+			await loadNodesEdgesForFloor(currentFloor);
 		} catch (err) {
 			alert(err.message);
 		}
