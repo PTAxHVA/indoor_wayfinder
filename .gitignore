@@ -116,8 +116,3 @@ dmypy.json
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Project specific
-data/db/*.db
-data/uploads/*
-!data/uploads/.gitkeep
