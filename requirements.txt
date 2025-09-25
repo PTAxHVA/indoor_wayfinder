@@ -7,3 +7,5 @@ rapidfuzz
 Unidecode 
 python-multipart 
 pillow
+python-dotenv
+psycopg2-binary
